@@ -22,5 +22,4 @@ jobs:
         env:
           KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
         run: |
-          koyeb login --token "${KOYEB_TOKEN}"
           koyeb service update upset-tamma/eshop-firstaqila --git-branch main
