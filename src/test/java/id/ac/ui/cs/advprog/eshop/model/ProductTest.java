@@ -54,7 +54,7 @@ class ProductTest {
 
     @Test
     void testGetProductQuantityInvalid() {
-        assertNotEquals("50", this.product.getProductQuantity());
+        assertNotEquals(50, this.product.getProductQuantity());
     }
 
     @Test
