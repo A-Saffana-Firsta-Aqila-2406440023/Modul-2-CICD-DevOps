@@ -1,0 +1,26 @@
+name: Continuous Deployment (CD)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Koyeb
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Koyeb CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
+          echo "$HOME/.koyeb/bin" >> $GITHUB_PATH
+
+      - name: Update service on Koyeb
+        env:
+          KOYEB_TOKEN: ${{ secrets.KOYEB_TOKEN }}
+        run: |
+          koyeb login --token "${KOYEB_TOKEN}"
+          koyeb service update upset-tamma/eshop-firstaqila --git-branch main
