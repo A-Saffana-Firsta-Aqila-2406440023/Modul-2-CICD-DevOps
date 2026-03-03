@@ -48,3 +48,37 @@ I used **SonarCloud** to help analyze various issues in my codebase. Here are th
 Yes, the current implementation has met the definition of both Continuous Integration and Continuous Deployment. On the CI side, tests suites and SonarCloud analysis are automatically run on every `push` and `pull request` across all branches, ensuring code changes are continuously validated and helping detect code quality issues early in the development process. In addition, Scorecard is also integrated to perform security checks on the codebase. On the CD side, the application is automatically deployed to Koyeb whenever changes are pushed to the `main` branch, ensuring the latest version is always delivered to production without any manual intervention.
 
 </details>
+
+<details>
+<summary>Modul 3</summary>
+
+# Reflection
+# Explain what principles you apply to your project!
+1. Single Responsibility Principle (SRP)
+   - What was changed: Separated CarController from the ProductController.java file into its own standalone CarController.java file.
+   - Why it was changed: Previously, ProductController was handling two different domains (Product and Car). By isolating them, each controller now has a single responsibility: managing its own specific entity.
+
+2. Open-Closed Principle (OCP)
+   - What was changed: Refactored the update method in CarRepository to replace the entire object using carData.set(i, updatedCar) instead of manually setting each attribute one by one.
+   - Why it was changed: The previous method required modifying the repository every time a new field was added to the Car model, making it "open" for modification. The new approach is "closed" for modification because the repository no longer cares about the internal fields of the Car object. This allows the Car model to grow without needing constant changes to the persistence logic.
+
+3. Liskov Substitution Principle (LSP)
+   - What was changed: Removed the inheritance relationship where CarController previously extended ProductController.
+   - Why it was changed: A CarController is not a specialized version of a ProductController, so the "Is-A" relationship was semantically incorrect. Inheriting from it forced CarController to carry unnecessary dependencies and potential behaviors of the parent that it didn't need. Removing this inheritance ensures that each class stands on its own without violating the expected behavior of a controller.
+
+4. Interface Segregation Principle (ISP)
+   No further changes were made as the existing interfaces (CarService and ProductService) are already lean and specific to their respective domains.
+
+5. Dependency Inversion Principle (DIP)
+   - What was changed: Modified the CarController to import and depend on the CarService interface instead of the concrete CarServiceImpl.
+   - Why it was changed: High-level modules should not depend on low-level implementation details; both should depend on abstractions. By using the interface, the controller remains decoupled from the specific implementation of how cars are processed. This allows for easier testing (mocking) and makes it possible to swap the service implementation without touching the controller code.
+
+  
+# Explain the advantages of applying SOLID principles to your project with examples.
+- By applying SOLID principles, our project has become significantly more maintainable and robust against changing requirements. We have successfully achieved loose coupling between components, ensuring that a modification in one part of the system doesn't trigger a cascade of bugs elsewhere. Furthermore, this approach enhances our project's testability because classes are smaller and depend on abstractions, allowing us to easily swap real implementations with mocks during unit testing. 
+- One example: (LSP) By removing the CarController extends ProductController inheritance, we ensured that CarController doesn't inherit irrelevant behaviors. This prevents logic errors where our methods might expect one behavior but receive another.
+
+# Explain the disadvantages of not applying SOLID principles to your project with examples.
+- Without SOLID principles, our project would likely turn into "Spaghetti Code," where different functionalities are so tightly interwoven that they become difficult to untangle. This leads to Rigidity, where even a small feature request would require us to perform massive refactorings across multiple files due to hidden dependencies. Over time, our technical debt would grow so large that we would become hesitant to update the code, as every change would risk breaking unrelated parts of the application.
+- One example: (ISP): A "Fat Interface" would have forced our CarController to acknowledge or even implement Product-related methods that it doesn't actually need, cluttering our implementation.
+</details>
